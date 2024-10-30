@@ -1,13 +1,13 @@
 import { BasicPhoto } from "./unsplash";
 
-export type PhotoSearchOptions = {
+export type PhotoQueryOptions = {
   page: number;
   query: string;
   per_page?: number;
 };
 
-export async function getPhotos() {
-  const request = createRequest({ page: 1, query: 'cats' });
+export async function getPhotos(queryOptions: PhotoQueryOptions) {
+  const request = createRequest(queryOptions);
   const response = await fetch(request);
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
@@ -20,7 +20,7 @@ export async function getPhotos() {
   return { data, pagination };
 }
 
-function createRequest(search: PhotoSearchOptions, options?: { signal: AbortSignal }): Request {
+function createRequest(search: PhotoQueryOptions, options?: { signal: AbortSignal }): Request {
   const { per_page = 10, page, query } = search;
   const params = new URLSearchParams({
     per_page: String(per_page),
