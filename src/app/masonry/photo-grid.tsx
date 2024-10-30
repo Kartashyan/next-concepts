@@ -1,16 +1,18 @@
 "use client";
 import Image from 'next/image';
 import { BasicPhoto } from './unsplash';
+import { useInfiniteScroll } from './use-infinite-scroll';
 
 export const PhotoGrid = ({ data }: {
   data: BasicPhoto[];
 }) => {
-  if (!data) return <div>Loading...</div>;
+  const lastItemRef = useInfiniteScroll(!data, () => console.log("load more"));
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {data.map((photo) => (
         <Photo key={photo.id} photo={photo} />
       ))}
+      <div role="sentinel" ref={lastItemRef} className='w-full h-[1px]'/>
     </div>
   );
 }
