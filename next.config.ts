@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["images.unsplash.com"],
   },
+  experimental: {
+    optimizeCss: true,
+    reactCompiler: true,
+  },
 };
 
 export default nextConfig;
