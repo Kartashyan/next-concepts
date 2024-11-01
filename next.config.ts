@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizeCss: true,
-    reactCompiler: true,
+    reactCompiler: false,
   },
 };
 
