@@ -4,10 +4,11 @@ import { BasicPhoto } from "./unsplash";
 import { useInfiniteScroll } from "./use-infinite-scroll";
 import { useState } from "react";
 import { getPhotos } from "./get-photos";
+import { usePositions } from "./use-positions";
 
 const columns_count = 3;
-const gap = 4;
-const column_width = 300;
+const gap = 1;
+const column_width = 220;
 
 export const PhotoGrid = ({
   initialData: initialData,
@@ -25,16 +26,7 @@ export const PhotoGrid = ({
 
   const lastItemRef = useInfiniteScroll(!initialData, loadMore);
 
-  const columns = Array<number>(columns_count).fill(0);
-  const positions = photos.map(photo => {
-    const column = columns.indexOf(Math.min(...columns));
-    const aspect_ratio = photo.width / photo.height;
-    const height = column_width / aspect_ratio;
-    const left = column * (column_width + gap);
-    const top = columns[column];
-    columns[column] += height + gap;
-    return { ...photo, left, top, height, width: column_width };
-  })
+  const positions = usePositions(photos, columns_count, column_width, gap);
 
   return (
     <div className="relative">
