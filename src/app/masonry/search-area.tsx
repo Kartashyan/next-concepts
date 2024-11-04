@@ -1,31 +1,15 @@
 "use client";
 
-export const SearchArea = () => {
+export const SearchArea = ({value, onChange}: {value: string, onChange: (value: string) => void}) => {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <SearchInput />
-      <SearchButton />
+    <div className="fixed p-4 top-1 z-10 w-full">
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Search..."
+        className="p-2 w-full sm:w-1/2 border border-gray-300 rounded-lg text-black"
+      />
     </div>
   );
-}
-
-function SearchInput() {
-  return (
-    <input
-      type="text"
-      placeholder="Search..."
-      className="p-2 border border-gray-300 rounded-lg"
-    />
-  );
-}
-
-function SearchButton() {
-  return (
-    <button
-      type="button"
-      className="p-2 bg-blue-500 text-white rounded-lg"
-    >
-      Search
-    </button>
-  );
-}
+};
