@@ -8,10 +8,10 @@ import { getPhotos } from "./get-photos";
 import { usePositions } from "./use-positions";
 import { SearchArea } from "./search-area";
 import { useDebounce } from "./use-debounce";
+import { useResizeObserver } from "./use-resize";
 
-const columns_count = 3;
-const gap = 1;
-const column_width = 220;
+
+const gap = 6;
 
 export const PhotoGrid = ({
   initialData: initialData,
@@ -42,11 +42,13 @@ export const PhotoGrid = ({
   };
 
   const lastItemRef = useInfiniteScroll(!initialData, loadMore);
-
-  const positions = usePositions(photos, columns_count, column_width, gap);
+  const { ref, width } = useResizeObserver();
+  const columns_count = width > 768 ? 4 : 3;
+  const photoWidth = (width / columns_count) - gap;
+  const positions = usePositions(photos, columns_count, photoWidth, gap);
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <SearchArea value={query} onChange={setQuery} />
       {positions.map((photo) => (
         <Photo key={photo.id} photo={photo} />
@@ -69,12 +71,18 @@ function Photo({
   return (
     <div
       className={`absolute overflow-hidden bg-gray-200 rounded-lg aspect-w-1 aspect-h-1`}
-      style={{ left: photo.left + "px", top: photo.top + "px" }}
+      style={{
+        left: photo.left + "px",
+        top: photo.top + "px", 
+        width: photo.width,
+        height: photo.height,
+      }}
     >
       <Image
-        src={photo.urls.small}
+        src={photo.urls.regular}
         width={photo.width}
         height={photo.height}
+        priority
         alt={photo.description || photo.alt_description || "Photo"}
         className="object-cover w-full h-full"
       />
