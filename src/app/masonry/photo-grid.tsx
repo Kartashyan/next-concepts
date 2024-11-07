@@ -43,7 +43,14 @@ export const PhotoGrid = ({
 
   const lastItemRef = useInfiniteScroll(!initialData, loadMore);
   const { ref, width } = useResizeObserver();
-  const columns_count = width > 768 ? 4 : 3;
+
+  const getColumnCount = (width: number) => {
+    if (width < 640) return 2;        // Mobile: 2 columns
+    if (width < 1024) return 3;       // Tablet/Small screens: 3 columns
+    return 4;                         // Larger screens: 4 columns
+  };
+
+  const columns_count = getColumnCount(width);
   const photoWidth = (width / columns_count) - gap;
   const positions = usePositions(photos, columns_count, photoWidth, gap);
 
