@@ -36,7 +36,7 @@ export const PhotoGrid = ({
   };
 
   const loadMore = async () => {
-    const { data } = await getPhotos({ page: page + 1, query: "cat" });
+    const { data } = await getPhotos({ page: page + 1, query });
     setPhotos((prev) => [...prev, ...data.results]);
     setPage((prev) => prev + 1);
   };
