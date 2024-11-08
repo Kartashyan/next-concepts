@@ -89,7 +89,6 @@ function Photo({
         src={photo.urls.regular}
         width={photo.width}
         height={photo.height}
-        priority
         alt={photo.description || photo.alt_description || "Photo"}
         className="object-cover w-full h-full"
       />
